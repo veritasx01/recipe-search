@@ -5,24 +5,31 @@ import SearchBar, { RecipeCard } from "./search_port.jsx";
 
 function App() {
   const [darkTheme, setDarkTheme] = useState(true);
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState("Dessert");
   const [data, setData] = useState(null);
 
-  const categories = ["All", "Breakfast", "Lunch", "Dinner", "Snacks"];
+  const categories = [
+    "All",
+    "Dessert",
+    "Breakfast",
+    "Chicken",
+    "Goat",
+    "Lamb",
+    "Miscellaneous",
+    "Pasta",
+    "Pork",
+    "Seafood",
+    "Side",
+    "Starter",
+    "Vegan",
+    "Vegetarian",
+  ];
 
   useEffect(() => {
     document.body.classList.toggle("dark-theme", darkTheme);
   }, [darkTheme]);
 
-  useEffect(() => {
-    fetch("https://www.themealdb.com/api/json/v1/1/search.php?s=")
-      .then((res) => {
-        if (!res.ok) throw new Error("failed to fetch");
-        return res.json();
-      })
-      .then((data) => setData(data.meals))
-      .catch((err) => console.error(err));
-  }, []);
+  useEffect(() => {handleCategoryClick(activeCategory)}, []);
 
   const fetchMeals = (query) => {
     fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`)
@@ -31,7 +38,6 @@ function App() {
         return res.json();
       })
       .then((result) => {
-        // result.meals may be null if no match
         setData(result.meals || []);
       })
       .catch((err) => {
@@ -42,6 +48,32 @@ function App() {
 
   const handleSearch = (query) => {
     fetchMeals(query);
+  };
+
+  const handleCategoryClick = (category) => {
+    setActiveCategory(category);
+    const url =
+      category === "All"
+        ? "https://www.themealdb.com/api/json/v1/1/search.php?s="
+        : `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`;
+
+    fetch(url)
+      .then((r) => r.json())
+      .then(async (result) => {
+        const list = result.meals || [];
+        // Now fetch details for each idMeal
+        const detailed = await Promise.all(
+          list.map((m) =>
+            fetch(
+              `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${m.idMeal}`
+            )
+              .then((r) => r.json())
+              .then((j) => j.meals[0])
+          )
+        );
+        setData(detailed);
+      })
+      .catch(console.error);
   };
 
   return (
@@ -67,7 +99,7 @@ function App() {
               <li key={category}>
                 <button
                   className={activeCategory === category ? "active m-1" : "m-1"}
-                  onClick={() => setActiveCategory(category)}
+                  onClick={() => handleCategoryClick(category)}
                 >
                   {category}
                 </button>
@@ -76,7 +108,7 @@ function App() {
           </ul>
         </aside>
         <div className="recipe-container p-3">
-          {data.length === 0 ? (
+          {!data || data.length === 0 ? (
             <p>No recipes found.</p>
           ) : (
             data.map((meal) => (
@@ -84,7 +116,8 @@ function App() {
                 key={meal.idMeal}
                 title={meal.strMeal}
                 image={meal.strMealThumb}
-                link={meal.strYoutube}
+                ytlink={meal.strYoutube}
+                link={meal.strSource}
               />
             ))
           )}

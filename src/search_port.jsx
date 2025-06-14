@@ -1,14 +1,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-export default function SearchBar({ onSearch  }) {
-
+export default function SearchBar({ onSearch }) {
   const [searchInput, setSearchInput] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     searchInput.trim();
-    onSearch(searchInput); 
+    onSearch(searchInput);
   };
 
   return (
@@ -32,8 +31,7 @@ export default function SearchBar({ onSearch  }) {
   );
 }
 
-export function RecipeCard({ image, title, link }) {
-  const url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+export function RecipeCard({ image, title, ytlink, link }) {
   return (
     <div className="recipe-card d-flex align-items-start flex-column">
       <img
@@ -43,28 +41,30 @@ export function RecipeCard({ image, title, link }) {
           e.target.onerror = null;
           e.target.src = "/Image-not-found.png";
         }}
-        alt="Loaded from dynamic source"
         width={200}
         height={200}
       ></img>
-      <div className="d-flex p-0 m-0">
-        <p className="recipe-des ml-2 my-1">
-          {title ? (
-            <a
-              href={link ? link : "https://www.youtube.com/watch?v=dQw4w9WgXcQ"}
-              target="_blank"
-            >
-              {title}
-            </a>
-          ) : (
-            <a
-              href={link ? link : "https://www.youtube.com/watch?v=dQw4w9WgXcQ"}
-              target="_blank"
-            >
-              header
-            </a>
-          )}
-        </p>
+      <div className="d-flex p-0 mb-2 ml-2">
+        <a
+          href={link || ytlink || "https://www.youtube.com/watch?v=dQw4w9WgXcQ"}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={title || "header"} 
+          className="text-truncate d-inline-block" 
+          style={{ maxWidth: "150px" }} 
+        >
+          {title || "header"}
+        </a>
+        <a href={ytlink || link || "https://www.youtube.com/watch?v=dQw4w9WgXcQ"}>
+          <img
+            src="/ytlogo.webp"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-truncate d-inline-block" 
+            style={{ width: "20px", height: "20px" }} 
+          >
+          </img>
+        </a>
       </div>
     </div>
   );

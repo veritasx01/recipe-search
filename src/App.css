@@ -75,20 +75,13 @@ body {
   margin-bottom: 0.25rem;
 }
 
+.recipe-card div a {
+  color: var(--text-color);
+  font-size: small;
+}
+
 .recipe-image {
   border-radius: 15px;
-}
-
-.recipe-des {
-  font-weight: 400;
-}
-
-.recipe-des a {
-  color: white;
-}
-
-.recipe-des a:hover {
-  color: #5495ff;
 }
 
 .content-wrapper {
