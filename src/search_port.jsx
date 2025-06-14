@@ -47,7 +47,7 @@ export function RecipeCard({ image, title, ytlink, link }) {
       ></img>
       <div className="d-flex p-0 mb-2 ml-2">
         <a
-          href={link || ytlink || "https://www.youtube.com/watch?v=dQw4w9WgXcQ"}
+          href={link || ytlink || ""}
           target="_blank"
           rel="noopener noreferrer"
           title={title || "header"} 
@@ -56,7 +56,7 @@ export function RecipeCard({ image, title, ytlink, link }) {
         >
           {title || "header"}
         </a>
-        <a href={ytlink || link || "https://www.youtube.com/watch?v=dQw4w9WgXcQ"} target="_blank">
+        <a href={ytlink || link || ""} target="_blank">
           <img
             src={ytLogo}
             alt="yt"

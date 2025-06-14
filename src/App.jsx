@@ -5,7 +5,7 @@ import SearchBar, { RecipeCard } from "./search_port.jsx";
 
 function App() {
   const [darkTheme, setDarkTheme] = useState(true);
-  const [activeCategory, setActiveCategory] = useState("Dessert");
+  const [activeCategory, setActiveCategory] = useState("All");
   const [data, setData] = useState(null);
 
   const categories = [
@@ -51,6 +51,8 @@ function App() {
   const handleSearch = (query) => {
     fetchMeals(query);
   };
+
+  // hacky asf but they api doesn't provide links when searching by category
   const handleCategoryClick = (category) => {
     setActiveCategory(category);
 
@@ -63,17 +65,16 @@ function App() {
       .then((r) => r.json())
       .then(async (result) => {
         const list = result.meals || [];
-        // Now fetch details for each idMeal
-        //const detailed = await Promise.all(
-        //  list.map((m) =>
-        //    fetch(
-        //      `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${m.idMeal}`
-        //    )
-        //      .then((r) => r.json())
-        //      .then((j) => j.meals[0])
-        //  )
-        //);
-        setData(list);
+        const detailed = await Promise.all(
+          list.map((m) =>
+            fetch(
+              `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${m.idMeal}`
+            )
+              .then((r) => r.json())
+              .then((j) => j.meals[0])
+          )
+        );
+        setData(detailed);
       })
       .catch(console.error);
   };

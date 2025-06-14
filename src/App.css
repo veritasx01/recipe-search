@@ -30,6 +30,7 @@ body {
   background: var(--bg-color);
   padding: 0.5rem;
   justify-items: center;
+  transition: color 0.3s ease;
 }
 
 .input-bar {
@@ -91,15 +92,6 @@ body {
   padding: 1rem;
 }
 
-@media (max-width: 768px) {
-  .content-wrapper {
-    grid-template-columns: 1fr;
-  }
-
-  .category-menu {
-    margin-bottom: 1rem;
-  }
-}
 
 .category-menu button {
   background: none;
@@ -126,4 +118,17 @@ body {
 .category-menu ul {
   list-style: none;
   padding-left: 0;
+}
+
+@media (max-width: 768px) {
+ .recipe-container {
+    display: grid;
+    grid-template-columns: repeat(1, 220px);
+  }
+  .category-menu {
+    max-width: 160px;
+  }
+  .content-wrapper {
+    max-width: 180px;
+  }
 }
