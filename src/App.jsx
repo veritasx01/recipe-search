@@ -29,7 +29,9 @@ function App() {
     document.body.classList.toggle("dark-theme", darkTheme);
   }, [darkTheme]);
 
-  useEffect(() => {handleCategoryClick(activeCategory)}, []);
+  useEffect(() => {
+    handleCategoryClick(activeCategory);
+  }, []);
 
   const fetchMeals = (query) => {
     fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`)
@@ -49,9 +51,9 @@ function App() {
   const handleSearch = (query) => {
     fetchMeals(query);
   };
-
   const handleCategoryClick = (category) => {
     setActiveCategory(category);
+
     const url =
       category === "All"
         ? "https://www.themealdb.com/api/json/v1/1/search.php?s="
@@ -62,16 +64,16 @@ function App() {
       .then(async (result) => {
         const list = result.meals || [];
         // Now fetch details for each idMeal
-        const detailed = await Promise.all(
-          list.map((m) =>
-            fetch(
-              `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${m.idMeal}`
-            )
-              .then((r) => r.json())
-              .then((j) => j.meals[0])
-          )
-        );
-        setData(detailed);
+        //const detailed = await Promise.all(
+        //  list.map((m) =>
+        //    fetch(
+        //      `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${m.idMeal}`
+        //    )
+        //      .then((r) => r.json())
+        //      .then((j) => j.meals[0])
+        //  )
+        //);
+        setData(list);
       })
       .catch(console.error);
   };
@@ -126,5 +128,4 @@ function App() {
     </>
   );
 }
-
 export default App;

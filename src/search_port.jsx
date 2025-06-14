@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import ytLogo from "./assets/ytlogo.webp";
 
 export default function SearchBar({ onSearch }) {
   const [searchInput, setSearchInput] = useState("");
@@ -55,13 +56,12 @@ export function RecipeCard({ image, title, ytlink, link }) {
         >
           {title || "header"}
         </a>
-        <a href={ytlink || link || "https://www.youtube.com/watch?v=dQw4w9WgXcQ"}>
+        <a href={ytlink || link || "https://www.youtube.com/watch?v=dQw4w9WgXcQ"} target="_blank">
           <img
-            src="/ytlogo.webp"
-            target="_blank"
-            rel="noopener noreferrer"
+            src={ytLogo}
+            alt="yt"
             className="text-truncate d-inline-block" 
-            style={{ width: "20px", height: "20px" }} 
+            style={{ width: "25px", height: "25px" }} 
           >
           </img>
         </a>
